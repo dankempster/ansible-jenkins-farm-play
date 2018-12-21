@@ -1,0 +1,28 @@
+---
+jenkins_install_via: docker
+
+jenkins_home: /opt/jenkins
+jenkins_plugins: 
+  # - git
+  # - log-parser
+  # - copyartifact
+  # - workflow-aggregator
+  # - workflow-multibranch
+  # - docker-workflow
+  # - template-project
+
+  # - timestamper
+  # - job-dsl
+  # - antisamy-markup-formatter # owasp-markup-formatter
+  # - ws-cleanup # workspace-cleanup
+  # - ant
+  # - nodejs
+  # - pipeline-npm
+  # - github
+  # - pipeline-github
+
+docker_users: [vagrant]
+
+pip_install_packages:
+  - docker
+  - docker-compose

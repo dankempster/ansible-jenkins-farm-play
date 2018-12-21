@@ -1,0 +1,24 @@
+[submodule "emmetog.jenkins"]
+	path = roles/community/emmetog.jenkins
+	url = git@github.com:emmetog/ansible-jenkins.git
+[submodule "geerlingguy.git"]
+	path = roles/geerlingguy.git
+	url = git@github.com:geerlingguy/ansible-role-git.git
+[submodule "geerlingguy.pip"]
+	path = roles/geerlingguy.pip
+	url = git@github.com:geerlingguy/ansible-role-pip.git
+[submodule "geerlingguy.docker"]
+	path = roles/geerlingguy.docker
+	url = git@github.com:geerlingguy/ansible-role-docker.git
+[submodule "geerlingguy.java"]
+	path = roles/geerlingguy.java
+	url = git@github.com:geerlingguy/ansible-role-java.git
+[submodule "geerlingguy.jenkins"]
+	path = roles/geerlingguy.jenkins
+	url = git@github.com:geerlingguy/ansible-role-jenkins.git
+[submodule "geerlingguy.nodejs"]
+	path = roles/geerlingguy.nodejs
+	url = git@github.com:geerlingguy/ansible-role-nodejs.git
+[submodule "geerlingguy.ansible"]
+	path = roles/geerlingguy.ansible
+	url = git@github.com:geerlingguy/ansible-role-ansible.git

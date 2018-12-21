@@ -3,7 +3,7 @@ jenkins_install_via: docker
 
 jenkins_home: /opt/jenkins
 jenkins_plugins: 
-  # - git
+  - git
   # - log-parser
   # - copyartifact
   # - workflow-aggregator
@@ -12,7 +12,7 @@ jenkins_plugins:
   # - template-project
 
   # - timestamper
-  # - job-dsl
+  - job-dsl
   # - antisamy-markup-formatter # owasp-markup-formatter
   # - ws-cleanup # workspace-cleanup
   # - ant

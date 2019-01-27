@@ -1,33 +1,58 @@
+# Specify minimum Vagrant version and Vagrant API version
+Vagrant.require_version ">= 1.6.0"
+VAGRANTFILE_API_VERSION = "2"
+ 
+# Require YAML module
+require 'yaml'
+
+
 Vagrant.configure("2") do |config|
   
   boxes = [
     {
-      :name => "jenkins",
-      :hostname => "jenkins.playbook.ansible.test",
+      :name => "jenkins_host",
       :box => "geerlingguy/debian9",
-      :private_ip => "172.16.0.3"
+      :primary => true
     }
   ] 
 
   boxes.each do |opts|
-    config.vm.define opts[:name] do |config|
+    
+    opts[:primary] = opts.key?(:primary) ? opts[:primary] : false
+
+    config.vm.define opts[:name], primary: opts[:primary] do |config|
       
       config.vm.box = opts[:box]
-      config.vm.hostname = opts[:hostname]
-      config.vm.network :private_network, ip: opts[:private_ip]
+      
+      if (opts.key?(:hostname))
+        config.vm.hostname = opts[:hostname]
+      end
+      
+      if (opts.key?(:private_ip))
+        config.vm.network :private_network, ip: opts[:private_ip]
+      end
 
-      config.vm.synced_folder "./vagrant-jenkins-home/", "/opt/jenkins-git-copy",
-        owner: "vagrant",
-        group: "vagrant"
+      # config.vm.synced_folder "./vagrant-jenkins-home/", "/opt/jenkins-git-copy",
+      #   owner: "vagrant",
+      #   group: "vagrant"
       
       if opts[:name] == boxes.last[:name]
         config.vm.provision "ansible" do |ansible|
           ansible.playbook = "playbook.yml"
           # ansible.limit = "all"
           ansible.ask_vault_pass = false
+
+          ansible.groups = {
+            "jenkins" => ["jenkins_host"],
+            "jenkins:vars" => YAML.load_file('./inventory/group_vars/jenkins.yml')
+            # "jenkins:vars" => {
+            #   "docker_users" => ["vagrant"],
+            #   "jenkins_plugins" => ["git","buildtriggerbadge","console-badge","embeddable-build-status","green-balls","warnings-ng","github","violation-comments-to-github","job-dsl","workflow-aggregator","pipeline-github","pipeline-multibranch","blue-ocean"],
+            #   "pip_install_packages" => ["docker", "docker-compose"]
+            # }
+          }
         end
       end
-
     end
   end
 end

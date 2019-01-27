@@ -3,6 +3,9 @@
 jenkins_hostname: localhost
 jenkins_http_port: 8080
 
+jenkins_plugins:
+  - workflow-aggregator
+
 # inventory/group_vars/jenkins/vault_jenkins.yml
 #   encrypted with ansible-vault
 jenkins_admin_user: admin

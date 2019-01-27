@@ -1,31 +1,7 @@
 ---
-- hosts: jenkins
-  pre_tasks:
-    - name: Ensure ant is installed
-      package:
-        name: ant
-        state: present
-      become: true
-    - name: Install build-essential
-      action: apt pkg=build-essential
-      become: true
+- hosts: jenkins_host
   roles:
-    - role: roles/geerlingguy.git
-      become: true
-
-    - role: roles/geerlingguy.pip
-      become: true
-
-    - role: roles/geerlingguy.ansible
-      become: true
-
-    - role: roles/geerlingguy.docker
-      become: true
-    
     - role: roles/geerlingguy.java
-      become: true
-    
-    - role: roles/geerlingguy.nodejs
       become: true
     
     - role: roles/geerlingguy.jenkins

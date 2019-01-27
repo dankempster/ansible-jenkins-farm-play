@@ -1,20 +1,9 @@
 ---
-jenkins_home: /opt/jenkins
-jenkins_plugins: 
-  - git
-  - buildtriggerbadge
-  - console-badge
-  - embeddable-build-status
-  - green-balls
-  - warnings-ng
-  - github
-  - violation-comments-to-github
-  - job-dsl
-  - workflow-aggregator
-  - pipeline-github
-  - pipeline-multibranch
-  - blue-ocean
+# inventory/group_vars/jenkins/vars_jenkins.yml
+jenkins_hostname: localhost
+jenkins_http_port: 8080
 
-pip_install_packages:
-  - docker
-  - docker-compose
+# inventory/group_vars/jenkins/vault_jenkins.yml
+#   encrypted with ansible-vault
+jenkins_admin_user: admin
+jenkins_admin_pass: admin

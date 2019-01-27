@@ -15,8 +15,6 @@ jenkins_plugins:
   - pipeline-multibranch
   - blue-ocean
 
-docker_users: [vagrant]
-
 pip_install_packages:
   - docker
   - docker-compose

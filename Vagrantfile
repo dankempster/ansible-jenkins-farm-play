@@ -44,12 +44,10 @@ Vagrant.configure("2") do |config|
 
           ansible.groups = {
             "jenkins" => ["jenkins_host"],
-            "jenkins:vars" => YAML.load_file('./inventory/group_vars/jenkins.yml')
-            # "jenkins:vars" => {
-            #   "docker_users" => ["vagrant"],
-            #   "jenkins_plugins" => ["git","buildtriggerbadge","console-badge","embeddable-build-status","green-balls","warnings-ng","github","violation-comments-to-github","job-dsl","workflow-aggregator","pipeline-github","pipeline-multibranch","blue-ocean"],
-            #   "pip_install_packages" => ["docker", "docker-compose"]
-            # }
+            "jenkins:vars" => YAML.load_file('./inventory/group_vars/jenkins.yml'),
+
+            "vagrant" => ["jenkins_host"],
+            "vagrant:vars" => YAML.load_file('./inventory/group_vars/vagrant.yml')
           }
         end
       end

@@ -1,0 +1,9 @@
+---
+# Development settings
+# 
+# Generally, settings to make it possible/easy to develop/debug the playbook
+# with Vagrant.
+
+# Allow the vagrant user to use docker
+#   required for easy debugging: 'vagrant ssh > docker ps'
+docker_users: [vagrant]

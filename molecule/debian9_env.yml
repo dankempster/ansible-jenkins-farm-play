@@ -1,0 +1,3 @@
+---
+MOLECULE_DISTRO: debian9
+MOLECULE_IMAGE: "geerlingguy/docker-debian9-ansible:latest"

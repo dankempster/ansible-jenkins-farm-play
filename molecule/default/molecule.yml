@@ -1,0 +1,68 @@
+---
+dependency:
+  name: shell
+  command: "bash build/scripts/subdeps ${CI_SUBDEPS_COMMAND:-reset}"
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: "jenkins_${MOLECULE_DISTRO:-debian9}"
+    image: "${MOLECULE_IMAGE:-geerlingguy/docker-debian9-ansible:latest}"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    groups:
+      - jenkins
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ../../playbook.yml
+  inventory:
+    group_vars:
+      jenkins:
+        jenkins_hostname: "jenkins_${MOLECULE_DISTRO:-debian9}"
+        jenkins_http_port: 8080
+        jenkins_plugins:
+          - workflow-aggregator
+        jenkins_plugin_timeout: 120 # workflow-aggregator takes a while
+        jenkins_admin_user: admin
+        jenkins_admin_pass: admin  
+scenario:
+  name: default
+  create_sequence:
+    - create
+    - prepare
+  check_sequence:
+    - destroy
+    - dependency
+    - create
+    - prepare
+    - converge
+    - check
+    - destroy
+  converge_sequence:
+    - dependency
+    - create
+    - prepare
+    - converge
+  destroy_sequence:
+    - destroy
+  test_sequence:
+    # - lint
+    - destroy
+    # - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    # - side_effect
+    - verify
+    - destroy
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

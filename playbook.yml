@@ -1,5 +1,5 @@
 ---
-- hosts: jenkins_host
+- hosts: jenkins
   roles:
     - role: roles/geerlingguy.java
       become: true

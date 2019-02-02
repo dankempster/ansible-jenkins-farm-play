@@ -6,3 +6,5 @@
 
     - role: roles/geerlingguy.jenkins
       become: true
+
+    - role: roles/dankempster.jenkins-config

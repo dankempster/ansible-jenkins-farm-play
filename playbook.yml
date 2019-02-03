@@ -9,3 +9,6 @@
       when: jenkins_farm_role == 'master'
 
     - role: roles/dankempster.jenkins-config
+      when: jenkins_farm_role == 'master'
+
+    - role: roles/dankempster.jenkins-farm

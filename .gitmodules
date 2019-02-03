@@ -26,3 +26,6 @@
 [submodule "roles/geerlingguy.ansible"]
 	path = roles/geerlingguy.ansible
 	url = git@github.com:geerlingguy/ansible-role-ansible.git
+[submodule "roles/dankempster.jenkins-farm"]
+	path = roles/dankempster.jenkins-farm
+	url = git@github.com:dankempster/ansible-role-jenkins-farm.git

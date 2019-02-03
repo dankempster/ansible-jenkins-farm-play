@@ -19,10 +19,10 @@
 [submodule "geerlingguy.nodejs"]
 	path = roles/geerlingguy.nodejs
 	url = git@github.com:geerlingguy/ansible-role-nodejs.git
-[submodule "geerlingguy.ansible"]
-	path = roles/geerlingguy.ansible
-	url = git@github.com:geerlingguy/ansible-role-ansible.git
 [submodule "role.jenkins-config"]
 	path = roles/dankempster.jenkins-config
 	url = git@github.com:dankempster/ansible-role-jenkins-config.git
 	branch = develop
+[submodule "roles/geerlingguy.ansible"]
+	path = roles/geerlingguy.ansible
+	url = git@github.com:geerlingguy/ansible-role-ansible.git

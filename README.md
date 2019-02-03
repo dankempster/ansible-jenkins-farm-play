@@ -1,68 +1,87 @@
-# Simple Jenkins playbook
+# Jenkins Farm playbook
 
-An Ansible playbook to install and setup [Jenkins](https://jenkins.io), an automation server.
-
-
-## Goals
-
- - [x] Install Jenkins
- - [x] Install Jenkins plugins
- - [ ] Configure Github integration
- - [ ] Add initial jobs to Jenkis
+An Ansible playbook to install and setup [Jenkins](https://jenkins.io), an automation server and some build slaves.
 
 
 ## Usage
 
-1. copy `jenkins.yml` to your master playbook directory (e.g.
-`your-playbook/playbooks/jenkins.yml`) and import:
+1. copy `jenkins_farm.yml` to your master playbook directory (e.g.
+`your-playbook/playbooks/jenkins_farm.yml`) and import:
   
   ```yaml
   # your-playbook/main.yml
 
     # ... 
 
-    - import_playbook: playbooks/jenkins.yml
+    - import_playbook: playbooks/jenkins_farm.yml
   ```
 2. declare your jenkins host:
    ```yaml
    # inventory/inventory.yml
 
    # ...
-
-   jenkins:
+   jenkins_master:
      hosts:
-       jenkins_host.example.com:
+       jenkins_master.example.com:
+   
+   jenkins_slaves:
+     hosts:
+       jenkins_node1.example.com:
+       jenkins_node2.example.com:
+
+   jenkins_farm:
+     children:
+       jenkins_master:
+       jenins_slaves:
    ```
 3. define the minimum variables (in inventory):
-  
    ```yaml
-   # inventory/group_vars/jenkins/vars_jenkins.yml
+   # inventory/group_vars/jenkins_master/vars_jenkins_master.yml
 
-   jenkins_hostname: jenkins.example.com
+   ### role : dankempster.jenkins-config
+   jenkins_farm_role: master
+
+   ### role : geerlingguy.jenkins
+   jenkins_hostname: "{{ jenkins_farm_master }}"
    jenkins_http_port: 8080
 
-   # install your preferred plugins
    jenkins_plugins: []
    ```
 
    ```yaml
-   # inventory/group_vars/jenkins/vault_jenkins.yml
+   # inventory/group_vars/jenkins_master/vault_jenkins_master.yml
    #   should be encrypted with ansible-vault
    
    jenkins_admin_user: admin
    jenkins_admin_pass: admin
    ```
+  
+   ```yaml
+   # inventory/group_vars/jenkins_farm/vars_jenkins_slaves.yml
+
+   jenkins_farm_role: slave
+   jenkins_home: /home/jenkins
+   ```
+  
+   ```yaml
+   # inventory/group_vars/jenkins_farm/vars_jenkins_farm.yml
+
+   ### role : dankempster.jenkins-config
+   jenkins_farm_master: jenkins_master.example.com
+   ```
 4. (optional) setup github credentials
    ```yaml
-   # inventory/group_vars/jenkins/vars_github.yml
+   # inventory/group_vars/jenkins_master/vars_github.yml
    
+   ### role : dankempster.jenkins-config
    jenkins_github_enabled: true
    ```
 
    ```yaml
-   # inventory/group_vars/jenkins/vault_github.yml
+   # inventory/group_vars/jenkins_master/vault_github.yml
    #   should be encrypted with ansible-vault
    
+   ### role : dankempster.jenkins-config
    jenkins_github_user: dankempster
    jenkins_github_token: SECRET_GITHUB_TOKEN
    ```
@@ -77,9 +96,9 @@ An Ansible playbook to install and setup [Jenkins](https://jenkins.io), an autom
    _Tip: Use JobDSL and Jenkins Playground to generate job XML._
 
    ```yaml
-   # inventory/group_vars/jenkins/vars_jobs.yml
+   # inventory/group_vars/jenkins_master/vars_jenkins_jobs.yml
 
-   # paths should be relative to the jenkins.yml playbook
+   # paths should be relative to the jenkins_farm.yml playbook
    jenkins_jobs:
      - ../files/jenkins-jobs/myjob.xml
    ```

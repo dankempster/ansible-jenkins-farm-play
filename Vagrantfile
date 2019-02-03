@@ -10,9 +10,16 @@ Vagrant.configure("2") do |config|
   
   boxes = [
     {
-      :name => "jenkins_host",
+      :name => "jenkins_master",
       :box => "geerlingguy/debian9",
-      :primary => true
+      :primary => true,
+      :private_ip => "172.16.10.3"
+    },
+    {
+      :name => "jenkins_slave",
+      :box => "geerlingguy/debian9",
+      :primary => false,
+      :private_ip => "172.16.10.4"
     }
   ] 
 
@@ -39,15 +46,24 @@ Vagrant.configure("2") do |config|
       if opts[:name] == boxes.last[:name]
         config.vm.provision "ansible" do |ansible|
           ansible.playbook = "playbook.yml"
-          # ansible.limit = "all"
+          ansible.limit = "jenkins_farm"
           ansible.ask_vault_pass = false
 
           ansible.groups = {
-            "jenkins" => ["jenkins_host"],
+            "jenkins" => ["jenkins_master"],
             "jenkins:vars" => YAML.load_file('./inventory/group_vars/jenkins.yml'),
 
-            "vagrant" => ["jenkins_host"],
-            "vagrant:vars" => YAML.load_file('./inventory/group_vars/vagrant.yml')
+            "jenkins_farm" => ["jenkins_master", "jenkins_slave"],
+            "jenkins_farm:vars" => YAML.load_file('./inventory/group_vars/jenkins_farm.yml'),
+
+            "jenkins_master" => ["jenkins_master"],
+            "jenkins_master:vars" => YAML.load_file('./inventory/group_vars/jenkins_master.yml'),
+
+            "jenkins_slaves" => ["jenkins_slave"],
+            "jenkins_slaves:vars" => YAML.load_file('./inventory/group_vars/jenkins_slaves.yml')#,
+
+            # "vagrant" => ["jenkins_master"],
+            # "vagrant:vars" => YAML.load_file('./inventory/group_vars/vagrant.yml')
           }
         end
       end

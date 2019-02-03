@@ -1,10 +1,11 @@
 ---
-- hosts: jenkins
+- hosts: jenkins_farm
   roles:
     - role: roles/geerlingguy.java
       become: true
 
     - role: roles/geerlingguy.jenkins
       become: true
+      when: jenkins_farm_role == 'master'
 
     - role: roles/dankempster.jenkins-config
